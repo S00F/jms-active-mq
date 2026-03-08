@@ -13,10 +13,10 @@ public class JmsConfig {
     @Value("${spring.activemq.broker-url}")
     private String brokerUrl;
 
-    @Value("${spring.activemq.user}")
+    @Value("${spring.activemq.user:}")
     private String user;
 
-    @Value("${spring.activemq.password}")
+    @Value("${spring.activemq.password:}")
     private String password;
 
     @Bean
@@ -33,7 +33,7 @@ public class JmsConfig {
     @Bean
     public JmsTemplate jmsTemplate() {
         JmsTemplate jmsTemplate = new JmsTemplate(activeMQConnectionFactory());
-        jmsTemplate.setReceiveTimeout(5000L); // 5 second timeout
+        jmsTemplate.setReceiveTimeout(5000L);
         return jmsTemplate;
     }
 

@@ -1,12 +1,12 @@
 package org.example.controller;
 
+import org.example.consumer.MessageConsumer;
 import org.example.model.MessageModel;
 import org.example.producer.MessageProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jms.core.JmsTemplate;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,7 +19,7 @@ public class MessageController {
     private MessageProducer messageProducer;
 
     @Autowired
-    private JmsTemplate jmsTemplate;
+    private MessageConsumer messageConsumer;
 
     @PostMapping("/send")
     public ResponseEntity<String> sendMessage(@RequestBody MessageModel messageModel) {
@@ -35,7 +35,7 @@ public class MessageController {
     @GetMapping("/receive")
     public ResponseEntity<String> receiveMessage(@RequestParam String destination) {
         logger.info("Receive request for destination: {}", destination);
-        String message = (String) jmsTemplate.receiveAndConvert(destination);
+        String message = messageConsumer.receive(destination);
         if (message != null) {
             return ResponseEntity.ok("Message received: " + message);
         } else {
