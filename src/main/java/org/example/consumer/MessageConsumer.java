@@ -1,5 +1,6 @@
 package org.example.consumer;
 
+import org.springframework.jms.JmsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +25,12 @@ public class MessageConsumer {
                 logger.info("No message found in {}", destination);
             }
             return message;
+        } catch (JmsException e) {
+            logger.error("Failed to receive message from {}: {}", destination, e.getMessage(), e);
+            throw e;
         } catch (Exception e) {
             logger.error("Failed to receive message from {}: {}", destination, e.getMessage(), e);
-            throw new RuntimeException("Failed to receive message from " + destination, e);
+            throw new JmsException("Failed to receive message from " + destination, e) {};
         }
     }
 }
