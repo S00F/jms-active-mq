@@ -4,7 +4,7 @@ package org.example.producer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.JmsOperations;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,7 +13,7 @@ public class MessageProducer {
     private static final Logger logger = LoggerFactory.getLogger(MessageProducer.class);
 
     @Autowired
-    private JmsTemplate jmsTemplate;
+    private JmsOperations jmsTemplate;
 
     public void send(String destination, String message) {
         try {

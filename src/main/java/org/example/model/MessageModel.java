@@ -1,7 +1,12 @@
 package org.example.model;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class MessageModel {
+    @NotBlank(message = "Content is required")
     private String content;
+
+    @NotBlank(message = "Destination is required")
     private String destination;
 
     public MessageModel() {}

@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import jakarta.validation.Valid;
 import org.example.consumer.MessageConsumer;
 import org.example.model.MessageModel;
 import org.example.producer.MessageProducer;
@@ -22,11 +23,7 @@ public class MessageController {
     private MessageConsumer messageConsumer;
 
     @PostMapping("/send")
-    public ResponseEntity<String> sendMessage(@RequestBody MessageModel messageModel) {
-        if (messageModel == null || messageModel.getDestination() == null || messageModel.getContent() == null) {
-            logger.error("Invalid message: destination and content are required");
-            return ResponseEntity.badRequest().body("Invalid message: destination and content are required");
-        }
+    public ResponseEntity<String> sendMessage(@Valid @RequestBody MessageModel messageModel) {
         logger.info("Received message to send to {}: {}", messageModel.getDestination(), messageModel.getContent());
         messageProducer.send(messageModel.getDestination(), messageModel.getContent());
         return ResponseEntity.ok("Message sent: " + messageModel.getContent());
